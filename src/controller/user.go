@@ -78,8 +78,13 @@ func FindByAuthkey(authkey string) model.User {
 	user := model.User{}
 	for result.Next() {
 		var id uint
+		var mail string
+		var password string
+		var authkey string
+		var point uint
 		var createdAt, updatedAt time.Time
-		err = result.Scan(&id, &createdAt, &updatedAt)
+
+		err = result.Scan(&id, &mail, &password, &authkey, &point, &createdAt, &updatedAt)
 		if err != nil {
 			panic(err.Error())
 		}
