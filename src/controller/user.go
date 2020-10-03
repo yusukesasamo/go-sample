@@ -3,16 +3,16 @@ package controller
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/yusukesasamo/go-sample/src/model"
 )
 
-// UsersGET is getting List of users
+// UsersGET gets List of users
 func UsersGET(c *gin.Context) {
 	db := model.DBConnect()
+	// TODO we should specify limit and offest.
 	result, err := db.Query("SELECT * FROM user ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
@@ -45,8 +45,8 @@ func UsersGET(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"users": users})
 }
 
-// FindByID is getting data by id
-func FindByID(id uint) model.User {
+// FindUserByID gets user by id
+func FindUserByID(id uint) model.User {
 	db := model.DBConnect()
 	result, err := db.Query("SELECT * FROM user WHERE id = ?", id)
 	if err != nil {
@@ -54,22 +54,30 @@ func FindByID(id uint) model.User {
 	}
 	user := model.User{}
 	for result.Next() {
+		var id uint
+		var mail string
+		var password string
+		var authkey string
+		var point uint
 		var createdAt, updatedAt time.Time
 
-		err = result.Scan(&id, &createdAt, &updatedAt)
+		err = result.Scan(&id, &mail, &password, &authkey, &point, &createdAt, &updatedAt)
 		if err != nil {
 			panic(err.Error())
 		}
 
 		user.ID = id
+		user.Mail = mail
+		user.Authkey = authkey
+		user.Point = point
 		user.CreatedAt = createdAt
 		user.UpdatedAt = updatedAt
 	}
 	return user
 }
 
-// FindByAuthkey is getting data by id
-func FindByAuthkey(authkey string) model.User {
+// FindUserByAuthkey gets user by authkey
+func FindUserByAuthkey(authkey string) model.User {
 	db := model.DBConnect()
 	result, err := db.Query("SELECT * FROM user WHERE authkey = ?", authkey)
 	if err != nil {
@@ -90,19 +98,22 @@ func FindByAuthkey(authkey string) model.User {
 		}
 
 		user.ID = id
+		user.Mail = mail
+		user.Authkey = authkey
+		user.Point = point
 		user.CreatedAt = createdAt
 		user.UpdatedAt = updatedAt
 	}
 	return user
 }
 
-// UserPOST is adding user
+// UserPOST adds user
 func UserPOST(c *gin.Context) {
 	db := model.DBConnect()
 
 	mail := c.PostForm("mail")
 	password := c.PostForm("password")
-	// TODO eventually we have to activate logic which will make authkey.
+	// TODO eventually we have to activate this logic which will make authkey.
 	// s := []string{mail, password}
 	// joinedString := strings.Join(s, "")
 	// b := []byte(joinedString)
@@ -123,8 +134,9 @@ func UserPOST(c *gin.Context) {
 func UserPATCH(c *gin.Context) {
 	db := model.DBConnect()
 
-	id, _ := strconv.Atoi(c.Param("id"))
-
+	authkey := c.PostForm("authkey")
+	user := FindUserByAuthkey(string(authkey))
+	id := user.ID
 	password := c.PostForm("password")
 	now := time.Now()
 
@@ -133,28 +145,28 @@ func UserPATCH(c *gin.Context) {
 		panic(err.Error())
 	}
 
-	user := FindByID(uint(id))
+	updatedUser := FindUserByID(uint(id))
 
 	fmt.Println(user)
-	c.JSON(http.StatusOK, gin.H{"user": user})
+	c.JSON(http.StatusOK, gin.H{"user": updatedUser})
 }
 
 // UserDELETE deletes user
-func UserDELETE(c *gin.Context) {
-	db := model.DBConnect()
+// func UserDELETE(c *gin.Context) {
+// 	db := model.DBConnect()
 
-	id, _ := strconv.Atoi(c.Param("id"))
+// 	id, _ := strconv.Atoi(c.Param("id"))
 
-	// Check if record exists
-	_, err := db.Query("DELETE FROM user WHERE id = ?", id)
-	if err != nil {
-		panic(err.Error())
-	}
+// 	// Check if record exists
+// 	_, err := db.Query("DELETE FROM user WHERE id = ?", id)
+// 	if err != nil {
+// 		panic(err.Error())
+// 	}
 
-	c.JSON(http.StatusOK, "deleted")
-}
+// 	c.JSON(http.StatusOK, "deleted")
+// }
 
-// UserAuth is getting user information by mail and password
+// UserAuth gets user information by mail and password
 func UserAuth(c *gin.Context) {
 	db := model.DBConnect()
 

@@ -9,9 +9,10 @@ import (
 	"github.com/yusukesasamo/go-sample/src/model"
 )
 
-// UserPurchaseHistoriesGET is getting List of user_purchase_history
+// UserPurchaseHistoriesGET gets List of user_purchase_history
 func UserPurchaseHistoriesGET(c *gin.Context) {
 	db := model.DBConnect()
+	// TODO we should specify limit and offest.
 	result, err := db.Query("SELECT * FROM user_purchase_history ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
@@ -48,27 +49,32 @@ func FindByUserPurchaseHistoryID(id uint) model.UserPurchaseHistory {
 	if err != nil {
 		panic(err.Error())
 	}
-	user := model.UserPurchaseHistory{}
+	userPurchaseHistory := model.UserPurchaseHistory{}
 	for result.Next() {
+		var id uint
+		var userID uint
+		var itemID uint
 		var createdAt, updatedAt time.Time
 
-		err = result.Scan(&id, &createdAt, &updatedAt)
+		err = result.Scan(&id, &userID, &itemID, &createdAt, &updatedAt)
 		if err != nil {
 			panic(err.Error())
 		}
 
-		user.ID = id
-		user.CreatedAt = createdAt
-		user.UpdatedAt = updatedAt
+		userPurchaseHistory.ID = id
+		userPurchaseHistory.ItemID = itemID
+		userPurchaseHistory.CreatedAt = createdAt
+		userPurchaseHistory.UpdatedAt = updatedAt
 	}
-	return user
+	return userPurchaseHistory
 }
 
 // UserPurchaseHistoryPOST is adding data
 func UserPurchaseHistoryPOST(c *gin.Context) {
 	db := model.DBConnect()
-
-	userID := c.PostForm("userID")
+	authkey := c.PostForm("authkey")
+	user := FindUserByAuthkey(string(authkey))
+	userID := user.ID
 	itemID := c.PostForm("itemID")
 	now := time.Now()
 
@@ -77,5 +83,5 @@ func UserPurchaseHistoryPOST(c *gin.Context) {
 		panic(err.Error())
 	}
 
-	fmt.Printf("post sent. userID: %s", userID)
+	fmt.Printf("post sent. userID: %s", itemID)
 }

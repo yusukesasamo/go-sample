@@ -78,11 +78,11 @@ func FindByItemID(id uint) model.Item {
 	return item
 }
 
-// ItemPOST is adding user
+// ItemPOST adds item
 func ItemPOST(c *gin.Context) {
 	db := model.DBConnect()
 	authkey := c.PostForm("authkey")
-	user := FindByAuthkey(string(authkey))
+	user := FindUserByAuthkey(string(authkey))
 
 	userID := user.ID
 	name := c.PostForm("name")
@@ -103,7 +103,7 @@ func ItemPATCH(c *gin.Context) {
 	db := model.DBConnect()
 
 	authkey := c.PostForm("authkey")
-	user := FindByAuthkey(string(authkey))
+	user := FindUserByAuthkey(string(authkey))
 
 	userID := user.ID
 	id, _ := strconv.Atoi(c.Param("id"))
@@ -122,18 +122,18 @@ func ItemPATCH(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"item": item})
 }
 
-// ItemDELETE deletes user
+// ItemDELETE deletes item
 func ItemDELETE(c *gin.Context) {
 	db := model.DBConnect()
 
 	id, _ := strconv.Atoi(c.Param("id"))
 	authkey := c.PostForm("authkey")
-	user := FindByAuthkey(string(authkey))
+	user := FindUserByAuthkey(string(authkey))
 
 	userID := user.ID
 
 	// Check if record exists
-	_, err := db.Query("DELETE FROM user WHERE id = ? and user_id = ?", id, userID)
+	_, err := db.Query("DELETE FROM item WHERE id = ? and user_id = ?", id, userID)
 	if err != nil {
 		panic(err.Error())
 	}

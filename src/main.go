@@ -12,8 +12,8 @@ func main() {
 	{
 		v1.GET("/user", controller.UsersGET)
 		v1.POST("/user", controller.UserPOST)
-		v1.PATCH("/user/:id", controller.UserPATCH)
-		v1.DELETE("/user/:id", controller.UserDELETE)
+		v1.PATCH("/user", controller.UserPATCH)
+		// v1.DELETE("/user", controller.UserDELETE)
 		v1.POST("/userAuth", controller.UserAuth)
 		v1.GET("/userPurchaseHistory", controller.UserPurchaseHistoriesGET)
 		v1.POST("/userPurchaseHistory", controller.UserPurchaseHistoryPOST)
@@ -21,6 +21,7 @@ func main() {
 		v1.POST("/item", controller.ItemPOST)
 		v1.PATCH("/item/:id", controller.ItemPATCH)
 		v1.DELETE("/item/:id", controller.ItemDELETE)
+		v1.POST("/purchase", controller.PurchasePOST)
 	}
 	router.Run(":9000")
 }
