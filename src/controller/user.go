@@ -67,9 +67,11 @@ func UserPOST(c *gin.Context) {
 
 	mail := c.PostForm("mail")
 	password := c.PostForm("password")
+	authkey := "hogehoge"
+	point := 10000
 	now := time.Now()
 
-	_, err := db.Exec("INSERT INTO task (mail, password, created_at, updated_at) VALUES(?, ?, ?, ?)", mail, password, now, now)
+	_, err := db.Exec("INSERT INTO user (mail, password, authkey, point, created_at, updated_at) VALUES(?, ?, ?, ?)", mail, password, authkey, point now, now)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -86,12 +88,12 @@ func UserPATCH(c *gin.Context) {
 	password := c.PostForm("password")
 	now := time.Now()
 
-	_, err := db.Exec("UPDATE task SET password = ?, updated_at=? WHERE id = ?", password, now, id)
+	_, err := db.Exec("UPDATE user SET password = ?, updated_at=? WHERE id = ?", password, now, id)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	task := FindByID(uint(id))
+	user := FindByID(uint(id))
 
 	fmt.Println(task)
 	c.JSON(http.StatusOK, gin.H{"task": task})
