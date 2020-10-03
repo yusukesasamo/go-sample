@@ -71,7 +71,7 @@ func UserPOST(c *gin.Context) {
 	point := 10000
 	now := time.Now()
 
-	_, err := db.Exec("INSERT INTO user (mail, password, authkey, point, created_at, updated_at) VALUES(?, ?, ?, ?)", mail, password, authkey, point now, now)
+	_, err := db.Exec("INSERT INTO user (mail, password, authkey, point, created_at, updated_at) VALUES(?, ?, ?, ?)", mail, password, authkey, point, now, now)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -95,8 +95,8 @@ func UserPATCH(c *gin.Context) {
 
 	user := FindByID(uint(id))
 
-	fmt.Println(task)
-	c.JSON(http.StatusOK, gin.H{"task": task})
+	fmt.Println(user)
+	c.JSON(http.StatusOK, gin.H{"user": user})
 }
 
 // UserDELETE deletes user
