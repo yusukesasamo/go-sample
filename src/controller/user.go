@@ -126,7 +126,7 @@ func UserDELETE(c *gin.Context) {
 	c.JSON(http.StatusOK, "deleted")
 }
 
-// UserAuth is getting user information
+// UserAuth is getting user information by mail and password
 func UserAuth(c *gin.Context) {
 	db := model.DBConnect()
 
