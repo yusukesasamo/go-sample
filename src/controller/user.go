@@ -21,11 +21,8 @@ func UsersGET(c *gin.Context) {
 	users := []model.User{}
 	for result.Next() {
 		user := model.User{}
-		var id uint
-		var mail string
-		var password string
-		var authkey string
-		var point uint
+		var id, point uint
+		var mail, password, authkey string
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &mail, &password, &authkey, &point, &createdAt, &updatedAt)
@@ -54,11 +51,8 @@ func FindUserByID(id uint) model.User {
 	}
 	user := model.User{}
 	for result.Next() {
-		var id uint
-		var mail string
-		var password string
-		var authkey string
-		var point uint
+		var id, point uint
+		var mail, password, authkey string
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &mail, &password, &authkey, &point, &createdAt, &updatedAt)
@@ -85,11 +79,8 @@ func FindUserByAuthkey(authkey string) model.User {
 	}
 	user := model.User{}
 	for result.Next() {
-		var id uint
-		var mail string
-		var password string
-		var authkey string
-		var point uint
+		var id, point uint
+		var mail, password, authkey string
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &mail, &password, &authkey, &point, &createdAt, &updatedAt)
@@ -151,21 +142,6 @@ func UserPATCH(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"user": updatedUser})
 }
 
-// UserDELETE deletes user
-// func UserDELETE(c *gin.Context) {
-// 	db := model.DBConnect()
-
-// 	id, _ := strconv.Atoi(c.Param("id"))
-
-// 	// Check if record exists
-// 	_, err := db.Query("DELETE FROM user WHERE id = ?", id)
-// 	if err != nil {
-// 		panic(err.Error())
-// 	}
-
-// 	c.JSON(http.StatusOK, "deleted")
-// }
-
 // UserAuth gets user information by mail and password
 func UserAuth(c *gin.Context) {
 	db := model.DBConnect()
@@ -179,11 +155,8 @@ func UserAuth(c *gin.Context) {
 
 	user := model.User{}
 	for result.Next() {
-		var id uint
-		var mail string
-		var password string
-		var authkey string
-		var point uint
+		var id, point uint
+		var mail, password, authkey string
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &mail, &password, &authkey, &point, &createdAt, &updatedAt)

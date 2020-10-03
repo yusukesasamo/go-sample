@@ -13,7 +13,6 @@ func main() {
 		v1.GET("/user", controller.UsersGET)
 		v1.POST("/user", controller.UserPOST)
 		v1.PATCH("/user", controller.UserPATCH)
-		// v1.DELETE("/user", controller.UserDELETE)
 		v1.POST("/userAuth", controller.UserAuth)
 		v1.GET("/userPurchaseHistory", controller.UserPurchaseHistoriesGET)
 		v1.POST("/userPurchaseHistory", controller.UserPurchaseHistoryPOST)

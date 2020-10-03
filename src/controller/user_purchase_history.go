@@ -21,9 +21,7 @@ func UserPurchaseHistoriesGET(c *gin.Context) {
 	userPurchaseHistories := []model.UserPurchaseHistory{}
 	for result.Next() {
 		userPurchaseHistory := model.UserPurchaseHistory{}
-		var id uint
-		var userID uint
-		var itemID uint
+		var id, userID, itemID uint
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &userID, &itemID, &createdAt, &updatedAt)
@@ -51,9 +49,7 @@ func FindByUserPurchaseHistoryID(id uint) model.UserPurchaseHistory {
 	}
 	userPurchaseHistory := model.UserPurchaseHistory{}
 	for result.Next() {
-		var id uint
-		var userID uint
-		var itemID uint
+		var id, userID, itemID uint
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &userID, &itemID, &createdAt, &updatedAt)

@@ -22,11 +22,8 @@ func ItemsGET(c *gin.Context) {
 	items := []model.Item{}
 	for result.Next() {
 		item := model.Item{}
-		var id uint
-		var userID uint
+		var id, userID, price, stockFlg uint
 		var name string
-		var price uint
-		var stockFlg uint
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &userID, &name, &price, &stockFlg, &createdAt, &updatedAt)
@@ -56,11 +53,8 @@ func FindByItemID(id uint) model.Item {
 	}
 	item := model.Item{}
 	for result.Next() {
-		var id uint
-		var userID uint
+		var id, userID, price, stockFlg uint
 		var name string
-		var price uint
-		var stockFlg uint
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &userID, &name, &price, &stockFlg, &createdAt, &updatedAt)
