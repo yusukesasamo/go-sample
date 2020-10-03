@@ -74,7 +74,12 @@ func UserPOST(c *gin.Context) {
 
 	mail := c.PostForm("mail")
 	password := c.PostForm("password")
-	authkey := "hogehoge"
+	// TODO eventually we have to activate logic which will make authkey.
+	// s := []string{mail, password}
+	// joinedString := strings.Join(s, "")
+	// b := []byte(joinedString)
+	// authkey := sha512.Sum512(b)
+	authkey := "hoge"
 	point := 10000
 	now := time.Now()
 
