@@ -127,7 +127,7 @@ func UserAuth(c *gin.Context) {
 
 	mail := c.PostForm("mail")
 	password := c.PostForm("password")
-	result, err := db.Query("SELECT * FROM user WHERE mail = ? and password", mail, password)
+	result, err := db.Query("SELECT * FROM user WHERE mail = ? and password = ?", mail, password)
 	if err != nil {
 		panic(err.Error())
 	}
