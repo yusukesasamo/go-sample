@@ -23,7 +23,6 @@ func UsersGET(c *gin.Context) {
 		user := model.User{}
 		var id uint
 		var createdAt, updatedAt time.Time
-		var title string
 
 		err = result.Scan(&id, &createdAt, &updatedAt)
 		if err != nil {
@@ -49,7 +48,6 @@ func FindByID(id uint) model.User {
 	user := model.User{}
 	for result.Next() {
 		var createdAt, updatedAt time.Time
-		var title string
 
 		err = result.Scan(&id, &createdAt, &updatedAt)
 		if err != nil {
