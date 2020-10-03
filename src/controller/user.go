@@ -45,7 +45,7 @@ func UsersGET(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"users": users})
 }
 
-// FindByID is getting user by id
+// FindByID is getting data by id
 func FindByID(id uint) model.User {
 	db := model.DBConnect()
 	result, err := db.Query("SELECT * FROM user WHERE id = ?", id)
@@ -78,7 +78,7 @@ func UserPOST(c *gin.Context) {
 	point := 10000
 	now := time.Now()
 
-	_, err := db.Exec("INSERT INTO user (mail, password, authkey, point, created_at, updated_at) VALUES(?, ?, ?, ?)", mail, password, authkey, point, now, now)
+	_, err := db.Exec("INSERT INTO user (mail, password, authkey, point, created_at, updated_at) VALUES(?, ?, ?, ?, ?, ?)", mail, password, authkey, point, now, now)
 	if err != nil {
 		panic(err.Error())
 	}
