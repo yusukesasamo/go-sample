@@ -119,7 +119,7 @@ func UserPOST(c *gin.Context) {
 	fmt.Printf("post sent. mail: %s", mail)
 }
 
-// UserPATCH is updating user
+// UserPATCH updates user
 func UserPATCH(c *gin.Context) {
 	db := model.DBConnect()
 

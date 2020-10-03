@@ -10,7 +10,7 @@ import (
 	"github.com/yusukesasamo/go-sample/src/model"
 )
 
-// ItemsGET is getting List of data
+// ItemsGET gets List of item
 func ItemsGET(c *gin.Context) {
 	db := model.DBConnect()
 	result, err := db.Query("SELECT * FROM item ORDER BY id DESC")
@@ -46,7 +46,7 @@ func ItemsGET(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"items": items})
 }
 
-// FindByItemID is getting data by id
+// FindByItemID gets item data by id
 func FindByItemID(id uint) model.Item {
 	db := model.DBConnect()
 	result, err := db.Query("SELECT * FROM item WHERE id = ?", id)
@@ -98,16 +98,20 @@ func ItemPOST(c *gin.Context) {
 	fmt.Printf("post sent. name: %s", name)
 }
 
-// ItemPATCH is updating user
+// ItemPATCH updates item
 func ItemPATCH(c *gin.Context) {
 	db := model.DBConnect()
 
+	authkey := c.PostForm("authkey")
+	user := FindByAuthkey(string(authkey))
+
+	userID := user.ID
 	id, _ := strconv.Atoi(c.Param("id"))
-	userID := c.PostForm("userID")
 	name := c.PostForm("name")
+	price := c.PostForm("price")
 	now := time.Now()
 
-	_, err := db.Exec("UPDATE item SET user_id = ?, name = ? updated_at=? WHERE id = ?", userID, name, now, id)
+	_, err := db.Exec("UPDATE item SET name = ?, price = ? updated_at=? WHERE id = ? and user_id = ?", name, price, now, id, userID)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -123,7 +127,10 @@ func ItemDELETE(c *gin.Context) {
 	db := model.DBConnect()
 
 	id, _ := strconv.Atoi(c.Param("id"))
-	userID := c.PostForm("userID")
+	authkey := c.PostForm("authkey")
+	user := FindByAuthkey(string(authkey))
+
+	userID := user.ID
 
 	// Check if record exists
 	_, err := db.Query("DELETE FROM user WHERE id = ? and user_id = ?", id, userID)
