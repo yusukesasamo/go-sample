@@ -68,6 +68,29 @@ func FindByID(id uint) model.User {
 	return user
 }
 
+// FindByAuthkey is getting data by id
+func FindByAuthkey(authkey string) model.User {
+	db := model.DBConnect()
+	result, err := db.Query("SELECT * FROM user WHERE authkey = ?", authkey)
+	if err != nil {
+		panic(err.Error())
+	}
+	user := model.User{}
+	for result.Next() {
+		var id uint
+		var createdAt, updatedAt time.Time
+		err = result.Scan(&id, &createdAt, &updatedAt)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		user.ID = id
+		user.CreatedAt = createdAt
+		user.UpdatedAt = updatedAt
+	}
+	return user
+}
+
 // UserPOST is adding user
 func UserPOST(c *gin.Context) {
 	db := model.DBConnect()

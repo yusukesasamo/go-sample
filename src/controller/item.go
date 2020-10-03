@@ -81,8 +81,10 @@ func FindByItemID(id uint) model.Item {
 // ItemPOST is adding user
 func ItemPOST(c *gin.Context) {
 	db := model.DBConnect()
+	authkey := c.PostForm("authkey")
+	user := FindByAuthkey(string(authkey))
 
-	userID := c.PostForm("userID")
+	userID := user.ID
 	name := c.PostForm("name")
 	price := c.PostForm("price")
 	stockFlg := 1
