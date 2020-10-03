@@ -8,13 +8,12 @@ import (
 func main() {
 	router := gin.Default()
 
-	v1 := router.Group("/todo/api/v1")
+	v1 := router.Group("/go-sample/api/v1")
 	{
-		v1.GET("/tasks", controller.TasksGET)
-		v1.POST("/tasks", controller.TaskPOST)
-		v1.PATCH("/tasks/:id", controller.TaskPATCH)
-		v1.DELETE("/tasks/:id", controller.TaskDELETE)
+		v1.GET("/user", controller.UsersGET)
+		v1.POST("/user", controller.UserPOST)
+		v1.PATCH("/user/:id", controller.UserPATCH)
+		v1.DELETE("/user/:id", controller.UserDELETE)
 	}
-	// nginxのreverse proxy設定
 	router.Run(":9000")
 }
