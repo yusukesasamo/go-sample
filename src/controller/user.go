@@ -120,3 +120,39 @@ func UserDELETE(c *gin.Context) {
 
 	c.JSON(http.StatusOK, "deleted")
 }
+
+// UserAuth is getting user information
+func UserAuth(c *gin.Context) {
+	db := model.DBConnect()
+
+	mail := c.PostForm("mail")
+	password := c.PostForm("password")
+	result, err := db.Query("SELECT * FROM user WHERE mail = ? and password", mail, password)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	user := model.User{}
+	for result.Next() {
+		var id uint
+		var mail string
+		var password string
+		var authkey string
+		var point uint
+		var createdAt, updatedAt time.Time
+
+		err = result.Scan(&id, &mail, &password, &authkey, &point, &createdAt, &updatedAt)
+		if err != nil {
+			panic(err.Error())
+		}
+
+		user.ID = id
+		user.Mail = mail
+		user.Authkey = authkey
+		user.Point = point
+		user.CreatedAt = createdAt
+		user.UpdatedAt = updatedAt
+	}
+	fmt.Println(user)
+	c.JSON(http.StatusOK, gin.H{"user": user})
+}

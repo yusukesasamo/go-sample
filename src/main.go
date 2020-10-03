@@ -14,6 +14,7 @@ func main() {
 		v1.POST("/user", controller.UserPOST)
 		v1.PATCH("/user/:id", controller.UserPATCH)
 		v1.DELETE("/user/:id", controller.UserDELETE)
+		v1.GET("/userAuth", controller.userAuth)
 		v1.GET("/userPurchaseHistory", controller.UserPurchaseHistoriesGET)
 		v1.POST("/userPurchaseHistory", controller.UserPurchaseHistoryPOST)
 		v1.GET("/item", controller.ItemsGET)
