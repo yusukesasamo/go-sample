@@ -17,14 +17,17 @@ func PurchasePOST(c *gin.Context) {
 	now := time.Now()
 
 	db := model.DBConnect()
+
 	tx, beginError := db.Begin()
 	if beginError != nil {
 		panic(beginError.Error())
 	}
+
 	result, err := db.Query("SELECT * FROM item WHERE id = ? FOR UPDATE", itemID)
 	if err != nil {
 		panic(err.Error())
 	}
+
 	item := model.Item{}
 	for result.Next() {
 		var id uint
