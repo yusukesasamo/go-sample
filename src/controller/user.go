@@ -42,7 +42,7 @@ func UsersGET(c *gin.Context) {
 		users = append(users, user)
 	}
 	fmt.Println(users)
-	c.JSON(http.StatusOK, gin.H{"users": users})
+	c.JSON(http.StatusOK, gin.H{"users": users, "hoge": "hogehoge"})
 }
 
 // FindUserByID gets user by id
