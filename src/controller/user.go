@@ -22,6 +22,9 @@ func UsersGET(c *gin.Context) {
 	for result.Next() {
 		user := model.User{}
 		var id uint
+		var mail string
+		var authkey string
+		var point uint
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &createdAt, &updatedAt)
@@ -30,6 +33,9 @@ func UsersGET(c *gin.Context) {
 		}
 
 		user.ID = id
+		user.Mail = mail
+		user.Authkey = authkey
+		user.Point = point
 		user.CreatedAt = createdAt
 		user.UpdatedAt = updatedAt
 		users = append(users, user)
