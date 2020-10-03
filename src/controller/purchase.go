@@ -50,20 +50,20 @@ func PurchasePOST(c *gin.Context) {
 
 	if item.StockFlg != 1 {
 		c.JSON(http.StatusBadRequest, "Alreadypurchased")
-	}
+	} else {
+		_, updateItemErr := db.Exec("UPDATE item SET stock_flg = ?, updated_at=? WHERE id = ?", 0, now, item.ID)
+		if updateItemErr != nil {
+			tx.Rollback()
+			panic(updateItemErr.Error())
+		}
 
-	_, updateItemErr := db.Exec("UPDATE item SET stock_flg = ?, updated_at=? WHERE id = ?", 0, now, item.ID)
-	if updateItemErr != nil {
-		tx.Rollback()
-		panic(updateItemErr.Error())
+		remainPoint := user.Point - item.Price
+		//TODO We will implement logc if remainPoint less than 0
+		_, updateUserErr := db.Exec("UPDATE user SET point = ?, updated_at=? WHERE id = ?", remainPoint, now, user.ID)
+		if updateUserErr != nil {
+			tx.Rollback()
+			panic(updateUserErr.Error())
+		}
+		tx.Commit()
 	}
-
-	remainPoint := user.Point - item.Price
-	//TODO We will implement logc if remainPoint less than 0
-	_, updateUserErr := db.Exec("UPDATE user SET point = ?, updated_at=? WHERE id = ?", remainPoint, now, user.ID)
-	if updateUserErr != nil {
-		tx.Rollback()
-		panic(updateUserErr.Error())
-	}
-	tx.Commit()
 }
