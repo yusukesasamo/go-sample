@@ -27,7 +27,7 @@ func UsersGET(c *gin.Context) {
 		var point uint
 		var createdAt, updatedAt time.Time
 
-		err = result.Scan(&id, &createdAt, &updatedAt)
+		err = result.Scan(&id, &mail, &authkey, &point, &createdAt, &updatedAt)
 		if err != nil {
 			panic(err.Error())
 		}
