@@ -30,11 +30,8 @@ func PurchasePOST(c *gin.Context) {
 
 	item := model.Item{}
 	for result.Next() {
-		var id uint
-		var userID uint
+		var id, userID, price, stockFlg uint
 		var name string
-		var price uint
-		var stockFlg uint
 		var createdAt, updatedAt time.Time
 
 		err = result.Scan(&id, &userID, &name, &price, &stockFlg, &createdAt, &updatedAt)
@@ -43,12 +40,8 @@ func PurchasePOST(c *gin.Context) {
 		}
 
 		item.ID = id
-		item.UserID = userID
-		item.Name = name
 		item.Price = price
 		item.StockFlg = stockFlg
-		item.CreatedAt = createdAt
-		item.UpdatedAt = updatedAt
 	}
 
 	if item.StockFlg != 1 {
