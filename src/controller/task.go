@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/unokun/go-todo-api/src/model"
+	"github.com/yusukesasamo/go-sample/src/model"
 )
 
 // タスク一覧
@@ -40,6 +40,7 @@ func TasksGET(c *gin.Context) {
 	fmt.Println(tasks)
 	c.JSON(http.StatusOK, gin.H{"tasks": tasks})
 }
+
 // タスク検索
 func FindByID(id uint) model.Task {
 	db := model.DBConnect()
@@ -64,6 +65,7 @@ func FindByID(id uint) model.Task {
 	}
 	return task
 }
+
 // タスク登録
 func TaskPOST(c *gin.Context) {
 	db := model.DBConnect()
@@ -78,6 +80,7 @@ func TaskPOST(c *gin.Context) {
 
 	fmt.Printf("post sent. title: %s", title)
 }
+
 // タスク更新
 func TaskPATCH(c *gin.Context) {
 	db := model.DBConnect()
@@ -97,6 +100,7 @@ func TaskPATCH(c *gin.Context) {
 	fmt.Println(task)
 	c.JSON(http.StatusOK, gin.H{"task": task})
 }
+
 // タスク削除
 func TaskDELETE(c *gin.Context) {
 	db := model.DBConnect()
