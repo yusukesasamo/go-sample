@@ -13,6 +13,7 @@ import (
 // ItemsGET gets List of item
 func ItemsGET(c *gin.Context) {
 	db := model.DBConnect()
+	// TODO we should specify limit and offest.
 	result, err := db.Query("SELECT * FROM item ORDER BY id DESC")
 	if err != nil {
 		panic(err.Error())
