@@ -75,4 +75,5 @@ CREATE TABLE IF NOT EXISTS item (
 
 
 ## TODO
-Refactor code to use swagger
+Refactor code to use swagger.
+Refactor code to use sqlmock for unit test.
