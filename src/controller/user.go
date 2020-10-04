@@ -134,6 +134,10 @@ func UserPATCH(c *gin.Context) {
 	authkey := c.PostForm("authkey")
 	user := FindUserByAuthkey(string(authkey))
 	id := user.ID
+
+	// TODO we should not use raw password. We will activate encrypt logic.
+	//passwordByte := []byte(c.PostForm("password"))
+	//password := sha512.Sum512(passwordByte)
 	password := c.PostForm("password")
 	now := time.Now()
 
