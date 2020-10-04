@@ -103,13 +103,19 @@ func UserPOST(c *gin.Context) {
 	db := model.DBConnect()
 
 	mail := c.PostForm("mail")
+
+	// TODO we should not insert raw password. We will activate encrypt logic.
+	//passwordByte := []byte(c.PostForm("password"))
+	//password := sha512.Sum512(passwordByte)
 	password := c.PostForm("password")
+
 	// TODO eventually we have to activate this logic which will make authkey.
 	// s := []string{mail, password}
 	// joinedString := strings.Join(s, "")
 	// b := []byte(joinedString)
 	// authkey := sha512.Sum512(b)
 	authkey := "hoge"
+
 	point := 10000
 	now := time.Now()
 
@@ -147,7 +153,12 @@ func UserAuth(c *gin.Context) {
 	db := model.DBConnect()
 
 	mail := c.PostForm("mail")
+
+	// TODO we should not use raw password. We will activate encrypt logic.
+	//passwordByte := []byte(c.PostForm("password"))
+	//password := sha512.Sum512(passwordByte)
 	password := c.PostForm("password")
+
 	result, err := db.Query("SELECT * FROM user WHERE mail = ? and password = ?", mail, password)
 	if err != nil {
 		panic(err.Error())
