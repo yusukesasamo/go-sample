@@ -12,7 +12,7 @@ import (
 
 var mockItem = model.Item{
 	ID:        1,
-	Name:      "Sasamon",
+	Name:      "sasamo",
 	UserID:    1,
 	Price:     1000,
 	StockFlg:  1,
