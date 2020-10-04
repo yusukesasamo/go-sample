@@ -72,7 +72,15 @@ CREATE TABLE IF NOT EXISTS item (
     PRIMARY KEY(id)
 );
 ```
+### How to run
+```
+$ go run main.go
+```
 
+### How to confirm
+```
+curl -X GET http://localhost:9000/go-sample/api/v1/user
+```
 
 ## TODO
 Refactor code to use swagger.
